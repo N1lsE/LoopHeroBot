@@ -10,7 +10,7 @@ class Logger:
 
 
 	@staticmethod
-	def getInstance(logPath = "logs"):
+	def getInstance():
 		if Logger.__instance == None:
 			Logger()
 		return Logger.__instance
@@ -19,14 +19,17 @@ class Logger:
 		if Logger.__instance != None:
 			raise Exception('Logger exists already!')
 		Logger.__instance = self
-		with open(Logger.__pathToLogFile + '//' + Logger.__logFileName, 'w') as logFile:
+
+		if not os.path.exists(Logger.__pathToLogFile):
+			os.makedirs(Logger.__pathToLogFile)
+		with open(Logger.__pathToLogFile + '\\' + Logger.__logFileName, 'w') as logFile:
 			logFile.write('Creation of latest.log file\n')
 
 	def Log(self, string:str):
 		print(string)
 		now = datetime.now()
 		current_time = now.strftime("%H:%M:%S")
-		with open(Logger.__pathToLogFile + '//' + Logger.__logFileName, 'a') as logFile:
+		with open(Logger.__pathToLogFile + '\\' + Logger.__logFileName, 'a') as logFile:
 			logFile.writelines(f'[{current_time}] {string}' + '\n')
 
 def test_Logger():
